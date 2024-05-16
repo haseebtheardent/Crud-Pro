@@ -5,6 +5,7 @@ from django.db.models.functions import Concat
 from app.forms import Record
 from app.models import RecordTable
 from django.contrib import messages
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -51,3 +52,16 @@ def delete(request, id):
         return redirect('home')
     except RecordTable.DoesNotExist:
         return HttpResponseNotFound("Record not found")
+
+
+def submit_form(request):
+    if request.method == 'POST':
+        form = YourForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Fetch updated records after saving the new record
+            records = YourModel.objects.all()
+            return render(request, 'customer_detail.html', {'records': records})
+        else:
+            # Handle form errors
+            return JsonResponse({'error': form.errors}, status=400)

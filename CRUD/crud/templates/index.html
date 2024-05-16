@@ -147,6 +147,47 @@
         </div>
         <!-- Closing row -->
     </div>
-    <!-- Closing container-fluid alert -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to handle form submission via AJAX
+            $('#myForm').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                var formData = $(this).serialize(); // Serialize form data
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "submit_form" %}', // Change this to your endpoint URL
+                    data: formData,
+                    success: function(response) {
+                        // Handle success response, for example, update customer detail table
+                        $('#customerDetail').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Function to handle delete action via AJAX
+            $('.delete-btn').click(function(event) {
+                event.preventDefault();
+                var deleteUrl = $(this).attr('href');
+                $.ajax({
+                    type: 'POST',
+                    url: deleteUrl,
+                    success: function(response) {
+                        // Handle success response, for example, update customer detail table
+                        $('#customerDetail').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
