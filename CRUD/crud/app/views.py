@@ -59,9 +59,7 @@ def submit_form(request):
         form = YourForm(request.POST)
         if form.is_valid():
             form.save()
-            # Fetch updated records after saving the new record
             records = YourModel.objects.all()
             return render(request, 'customer_detail.html', {'records': records})
         else:
-            # Handle form errors
             return JsonResponse({'error': form.errors}, status=400)
